@@ -18,9 +18,11 @@ model Registration {
 
 model Investor {
   id        Int      @id @default(autoincrement())
-  name      String
+  brand     String
+  contact   String
   email     String
-  firm      String?
-  message   String?
+  phone     String
+  website   String
+  logo      String
   createdAt DateTime @default(now())
 }

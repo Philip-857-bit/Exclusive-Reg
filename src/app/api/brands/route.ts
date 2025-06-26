@@ -1,38 +1,68 @@
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
-import nodemailer from 'nodemailer'
+import { writeFile, readFile } from 'fs/promises'
+import path from 'path'
+import { IncomingForm, File } from 'formidable'
+import { mkdir } from 'fs/promises'
+
+// Disable default body parsing
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
 const prisma = new PrismaClient()
 
 export async function POST(req: Request) {
-  const { name, email, phone, ticket } = await req.json()
+  const form = new IncomingForm({ keepExtensions: true, multiples: false })
 
-  if (!name || !email || !phone || !ticket) {
-    return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
-  }
-
-  const attendee = await prisma.registration.create({
-    data: { name, email, phone, company: ticket },
+  const { fields, files }: { fields: Record<string, any>; files: Record<string, File | File[] | undefined> } = await new Promise((resolve, reject) => {
+    form.parse(req as any, (err, fields, files) => {
+      if (err) reject(err)
+      else resolve({ fields, files })
+    })
   })
 
+  const { brand, contact, email, phone, website } = fields
+  let logoFile = files.logo
+  if (Array.isArray(logoFile)) {
+    logoFile = logoFile[0]
+  }
+
+  if (!brand || !contact || !email || !phone || !logoFile) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
+    // Ensure upload folder exists
+    const uploadDir = path.join(process.cwd(), 'public/uploads')
+    await mkdir(uploadDir, { recursive: true })
+
+    const ext = path.extname(logoFile.originalFilename || '.png')
+    const logoFileName = `${Date.now()}-${brand}${ext}`.replace(/\s+/g, '_')
+    const destPath = path.join(uploadDir, logoFileName)
+
+    const fileBuffer = await readFile(logoFile.filepath)
+    await writeFile(destPath, fileBuffer)
+
+    const imageUrl = `/uploads/${logoFileName}`
+
+    await prisma.investor.create({
+      data: {
+        // Replace 'brand' with the correct property name as per your Prisma schema, e.g., 'name'
+        brand,
+        contact,
+        email,
+        phone,
+        website,
+        logo: imageUrl,
       },
     })
 
-    await transporter.sendMail({
-      from: `StarCon <${process.env.MAIL_USER}>`,
-      to: email,
-      subject: 'Your StarCon 2025 Reservation',
-      html: `<h3>Hello ${name},</h3><p>Thanks for reserving your <strong>${ticket}</strong> ticket. We look forward to seeing you!</p>`,
-    })
+    return NextResponse.json({ success: true })
   } catch (err) {
-    console.error('Email error:', err)
+    console.error('Upload error:', err)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true })
 }
