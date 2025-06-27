@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react'
 import './globals.css'
 import {
-  FaInstagram,
   FaTwitter,
-  FaLinkedin,
   FaFacebook,
   FaYoutube,
 } from 'react-icons/fa'
@@ -35,25 +33,37 @@ export default function HomePage() {
   }, [])
 
   const handleForm = async (
-    e: React.FormEvent<HTMLFormElement>,
-    type: 'attendee' | 'brand'
-  ) => {
-    e.preventDefault()
-    const form = e.currentTarget
-    const formData = new FormData(form)
+  e: React.FormEvent<HTMLFormElement>,
+  type: 'attendee' | 'brand'
+) => {
+  e.preventDefault()
+  const form = e.currentTarget
 
-    try {
-      await fetch(`/api/${type === 'attendee' ? 'attendees' : 'brands'}`, {
+  try {
+    if (type === 'attendee') {
+      // Send JSON
+      const formData = Object.fromEntries(new FormData(form).entries())
+      await fetch('/api/attendees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+    } else {
+      // Send FormData (for file upload)
+      const formData = new FormData(form)
+      await fetch('/api/brands', {
         method: 'POST',
         body: formData,
       })
-      alert('Reservation confirmed! Check your email for more details.')
-      form.reset()
-    } catch (err) {
-      console.error('Form submission error:', err)
-      alert('Submission failed. Please try again.')
     }
+
+    alert('Reservation confirmed! Check your email for more details.')
+    form.reset()
+  } catch (err) {
+    console.error('Form submission error:', err)
+    alert('Submission failed. Please try again.')
   }
+}
 
   return (
     <main>
@@ -101,9 +111,9 @@ export default function HomePage() {
           <input type="email" name="email" placeholder="Email" required />
           <input type="tel" name="phone" placeholder="Phone" required />
           <select name="ticket">
-            <option value="free">Free</option>
-            <option value="student">Student</option>
-            <option value="vip">VIP</option>
+            <option value="free">Student</option>
+            <option value="student">Entrepreneur</option>
+            <option value="vip">Staff</option>
           </select>
           <button type="submit">Confirm Reservation</button>
         </form>
@@ -163,31 +173,26 @@ export default function HomePage() {
             📧 exclusivemusicorganization@gmail.com
           </a>
         </p>
-        <div className="socials">
-          <a href="https://instagram.com" target="_blank">
-            <FaInstagram />
-          </a>
-          <a href="https://twitter.com" target="_blank">
-            <FaTwitter />
-          </a>
-          <a href="https://linkedin.com" target="_blank">
-            <FaLinkedin />
-          </a>
-          <a href="https://youtube.com" target="_blank">
-            <FaYoutube />
-          </a>
-          <a href="https://facebook.com" target="_blank">
-            <FaFacebook />
-          </a>
-        </div>
-        <button>Contact Organizers</button>
+        <a
+        href="https://wa.me/2348071055742"><button>Contact Organizers</button></a>
         <p>
           For more info,{' '}
           <a href="mailto:exclusivemusicorganization@gmail.com">email us</a> or
           call the number above.
         </p>
+        <h2>Follow Us</h2>
+        <div className="socials">
+          <a href="https://x.com/exclusive96708" target="_blank">
+            <FaTwitter />
+          </a>
+          <a href="https://www.youtube.com/@exclusivemusic4311" target="_blank">
+            <FaYoutube />
+          </a>
+          <a href="https://www.facebook.com/share/19LffiXWq5/" target="_blank">
+            <FaFacebook />
+          </a>
+        </div>
       </section>
-
       <a
         href="https://wa.me/2348071055742"
         className="whatsapp-float"
