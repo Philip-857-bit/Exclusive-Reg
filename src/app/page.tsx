@@ -45,8 +45,8 @@ export default function HomePage() {
       const formData = Object.fromEntries(new FormData(form).entries())
       await fetch('/api/attendees', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' }
       })
     } else {
       // Send FormData (for file upload)
@@ -130,7 +130,7 @@ export default function HomePage() {
           <input name="contact" placeholder="Contact Person" required />
           <input name="email" type="email" placeholder="Email" required />
           <input name="phone" type="tel" placeholder="Phone" required />
-          <input name="website" placeholder="Website or Social Link" required />
+          <input name="website" placeholder="Website or Social Link" />
           <input
             name="logo"
             type="file"

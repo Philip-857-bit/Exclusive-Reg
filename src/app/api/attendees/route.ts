@@ -33,12 +33,40 @@ export async function POST(req: Request) {
       })
 
       await transporter.sendMail({
-        from: `StarCon <${mailUser}>`,
+        from: `DeExclusives Music Organization <${mailUser}>`,
         to: email,
-        subject: 'Your StarCon 2025 Reservation',
-        html: `<h3>Hello ${name},</h3>
-               <p>Thanks for reserving your <strong>${ticket}</strong> ticket. We look forward to seeing you!</p>`,
-      })
+        subject: 'DeExclusives Music Organization Event',
+  text: `Music and Science Con-festival Reservation
+
+Dear ${name},
+
+Congratulations, we have reserved a seat for you with a ${ticket} ticket.
+
+Event Details:
+Date: 1st August, 2025
+Time: 3:30pm
+Venue: TI Francis Auditorium, Federal University of Technology Akure, Ondo State, Nigeria.
+
+Best regards,
+DeExclusives Music Organization team`,
+        html: `
+     <h2>Music and Science Con-festival Reservation</h2>
+    <p>Dear <strong>${name}</strong>,</p>
+    <p><strong>Congratulations</strong>, we have reserved a seat for you with a <strong>${ticket}</strong> ticket.</p>
+
+    <hr/>
+    <h3>Event Details</h3>
+    <p><strong>Date:</strong> 1st August, 2025</p>
+    <p><strong>Time:</strong> 3:30 PM</p>
+    <p><strong>Venue:</strong> TI Francis Auditorium,<br/>
+       Federal University of Technology Akure,<br/>
+       Ondo State, Nigeria.</p>
+
+    <p>Best regards,<br/>
+    <strong>DeExclusives Music Organization team</strong></p>
+
+  `,
+        })
     }
 
     return NextResponse.json({ success: true })
