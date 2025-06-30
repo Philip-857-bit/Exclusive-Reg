@@ -158,9 +158,9 @@ export default function HomePage() {
 
       <section className="contact">
         <h2>Contact Us</h2>
-        <p>📍 Venue: Landmark Centre, Lagos</p>
+        <p>📍 Venue: Federal University of Technology, Akure</p>
         <iframe
-          src="https://maps.google.com/maps?q=Landmark%20Centre%20Lagos&t=&z=13&ie=UTF8&iwloc=&output=embed"
+          src="https://maps.google.com/?cid=15585918179509130822&entry=gps=&z=13&ie=UTF8&iwloc=&output=embed"
           width="100%"
           height="300"
           style={{ border: 0 }}
