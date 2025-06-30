@@ -111,9 +111,10 @@ export default function HomePage() {
           <input type="email" name="email" placeholder="Email" required />
           <input type="tel" name="phone" placeholder="Phone" required />
           <select name="ticket">
-            <option value="free">Student</option>
-            <option value="student">Entrepreneur</option>
-            <option value="vip">Staff</option>
+            <option value="Student">Student</option>
+            <option value="Entrepreneur">Entrepreneur</option>
+            <option value="staff">Staff</option>
+            <option value="virtual">Virtual</option>
           </select>
           <button type="submit">Confirm Reservation</button>
         </form>
