@@ -145,7 +145,7 @@ export default function HomePage() {
       </section>
 
       <section className="Join">
-        <h2>Join the Community</h2><FaWhatsapp/>
+        <h2>Join the Community</h2>
         <p>
           Be part of a transformative experience that celebrates the
           intersection of music and science. Connect with like-minded
