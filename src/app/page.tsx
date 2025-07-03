@@ -6,7 +6,6 @@ import {
   FaTwitter,
   FaFacebook,
   FaYoutube,
-  FaWhatsapp,
 } from 'react-icons/fa'
 import Image from 'next/image'
 
