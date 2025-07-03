@@ -12,6 +12,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
     }
 
+    // Check for existing registration first
+    const existing = await prisma.registration.findFirst({
+      where: {
+        email: email,
+        name: name,
+        phone: phone,
+        company: ticket
+      },
+    })
+
+    if (existing) {
+      return NextResponse.json(
+        { error: 'You have already registered.' },
+        { status: 400 }
+      )
+    }
+
     // Save attendee to the database
     await prisma.registration.create({
       data: { name, email, phone, company: ticket },

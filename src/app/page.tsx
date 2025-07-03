@@ -6,6 +6,7 @@ import {
   FaTwitter,
   FaFacebook,
   FaYoutube,
+  FaWhatsapp,
 } from 'react-icons/fa'
 import Image from 'next/image'
 
@@ -68,7 +69,7 @@ export default function HomePage() {
   return (
     <main>
       <section className="hero">
-        <h2>Dexclusive Music Organisation</h2>
+        <h2>DeExclusive Music Organisation</h2>
         <h1>Music & Science Con-Festival</h1>
         <h2>Theme: Fluidity Chain of Interaction: Future of Africa</h2>
         <p>August 1, 2025</p>
@@ -111,9 +112,9 @@ export default function HomePage() {
           <input type="email" name="email" placeholder="Email" required />
           <input type="tel" name="phone" placeholder="Phone" required />
           <select name="ticket">
-            <option value="Student">Student</option>
-            <option value="Entrepreneur">Entrepreneur</option>
-            <option value="staff">Staff</option>
+            <option value="student">Student</option>
+            <option value="staff">staff</option>
+            <option value="entrepreneur">Entrepreneur</option>
             <option value="virtual">Virtual</option>
           </select>
           <button type="submit">Confirm Reservation</button>
@@ -131,7 +132,7 @@ export default function HomePage() {
           <input name="contact" placeholder="Contact Person" required />
           <input name="email" type="email" placeholder="Email" required />
           <input name="phone" type="tel" placeholder="Phone" required />
-          <input name="website" placeholder="Website or Social Link" />
+          <input name="website" placeholder="Website or Social Link" required />
           <input
             name="logo"
             type="file"
@@ -144,7 +145,7 @@ export default function HomePage() {
       </section>
 
       <section className="Join">
-        <h2>Join the Movement</h2>
+        <h2>Join the Community</h2><FaWhatsapp/>
         <p>
           Be part of a transformative experience that celebrates the
           intersection of music and science. Connect with like-minded
